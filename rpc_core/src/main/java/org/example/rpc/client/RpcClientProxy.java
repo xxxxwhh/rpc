@@ -1,6 +1,8 @@
 package org.example.rpc.client;
 
 import org.example.rpc.entity.RpcRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -8,8 +10,10 @@ import java.lang.reflect.Proxy;
 
 public class RpcClientProxy implements InvocationHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(RpcClientProxy.class);
     private String host;
     private int port;
+
 
     public RpcClientProxy(String host, int port) {
         this.host = host;
@@ -21,7 +25,7 @@ public class RpcClientProxy implements InvocationHandler {
     }
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-
+        logger.info("调用方法：{}#{}", method.getDeclaringClass().getName(), method.getName());
         RpcRequest rpcRequest = RpcRequest.builder()
                 .interfaceName(method.getDeclaringClass().getName())
                 .methodName(method.getName())
